@@ -4,9 +4,9 @@ float speed=0.5;
 int x=-1,y=-1,z=-1;
 float rotate[3]={0,0,0};
 int axis=-1;
-int flag=-1;//rotation is disabled
+int flag=1;//rotation is disabled
 int size=0;
-float a=1,b=1,c=1;
+float a=0.5,b=0.5,c=0.5;
 
 //pattern data
 GLubyte roofPat[]={
@@ -137,7 +137,7 @@ void init()
 	glMatrixMode(GL_PROJECTION);
 	glClearColor(0.57,0.57,0.57,1.0);
 	glColor3f(0.4,0.2,0.6);
-	glOrtho(-200.0,200.0,-200.0,200.0,-200.0,200.0);
+	glOrtho(-100.0,100.0,-100.0,100.0,-100.0,100.0);
 	glMatrixMode(GL_MODELVIEW);
 }
 //metod to draw cube
@@ -237,8 +237,7 @@ void drawBaseSecondary(int cube[][3])
 	glColor3f(1.0,0.73,0.24);
 	drawface(cube[4],cube[5],cube[7],cube[6]);
 }
-
-
+//method to draw HouseWall
 void drawHouseWall(int cube[][3])
 {
 	glColor3f(0.86,0.86,0.86);
@@ -254,8 +253,7 @@ void drawHouseWall(int cube[][3])
 	glColor3f(0.86,0.66,0.86);
 	drawface(cube[4],cube[5],cube[7],cube[6]);
 }
-
-
+//method to draw house Wall Secondary
 void drawHouseWallSecondary(int cube[][3])
 {
 	glColor3f(0.0,0.4,0.9);
@@ -271,7 +269,7 @@ void drawHouseWallSecondary(int cube[][3])
 	glColor3f(0.0,0.5,0.7);
 	drawface(cube[4],cube[5],cube[7],cube[6]);
 }
-
+//method to draw House Roof
 void drawHouseRoof(int cube[][3])
 {
 	glColor3f(0.23,0.25,0.2);
@@ -287,7 +285,7 @@ void drawHouseRoof(int cube[][3])
 	glColor3f(0.23,0.25,0.2);
 	drawface(cube[4],cube[5],cube[7],cube[6]);
 }
-
+//method to draw House Roof Secondary
 void drawHouseRoofSecondary(int cube[][3])
 {
 	glColor3f(0.2,0.4568,0.51569);
@@ -303,7 +301,7 @@ void drawHouseRoofSecondary(int cube[][3])
 	glColor3f(0.2,0.4568,0.51569);
 	drawface(cube[4],cube[5],cube[7],cube[6]);
 }
-
+//metod to draw house door
 void drawHouseDoor(int cube[][3])
 {
 	glColor3f(1,1,1);
@@ -319,7 +317,7 @@ void drawHouseDoor(int cube[][3])
 	//glColor3f(0.2,0.4568,0.51569);
 	drawface(cube[4],cube[5],cube[7],cube[6]);
 }
-
+//method to draw house
 void drawHouse(){
 	drawBase(houseBase);
 	drawBaseSecondary(houseBaseSecondary);
@@ -330,48 +328,53 @@ void drawHouse(){
 	drawHouseRoofSecondary(houseRoofSecondary);
 	drawHouseDoor(houseDoor);
 }
+//method to draw scenery
+void background(){
+	glBegin(GL_POLYGON);//mountain
+		glColor3f(0.5,0.5,0.5);
+		glVertex3f(-100,60,-80);
+		glVertex3f(-90,60,-80);
+		glVertex3f(-85,70,-80);
+		glVertex3f(-50,90,-80);
+		glVertex3f(0,60,-80);
+		glVertex3f(20,60,-80);
+		glVertex3f(50,90,-80);
+		glVertex3f(90,60,-80);
 
-void display()
-{
+	glBegin(GL_POLYGON);//sky
+		glColor3f(0.0,0.0,1.0);
+		glVertex3f(-100,60,-80);
+		glVertex3f(-100,100,-80);
+		glVertex3f(100,100,-80);
+		glVertex3f(100,60,-80);
+    glEnd();
 
-	if(flag==1){
+    glBegin(GL_POLYGON);//ground
+		glColor3f(0.0,1.0,0.0);
+		glVertex3f(-100,-100,-80);
+		glVertex3f(-100,-20,-80);
+		glVertex3f(-90,-25,-80);
+		glVertex3f(-80,-35,-80);
+		glVertex3f(-70,-30,-80);
+		glVertex3f(-60,-20,-80);
+		glVertex3f(-40,-25,-80);
+		glVertex3f(-20,-40,-80);
+		glVertex3f(0,-35,-80);
+		glVertex3f(10,-25,-80);
+		glVertex3f(30,-10,-80);
+		glVertex3f(40,-15,-80);
+		glVertex3f(50,-20,-80);
+		glVertex3f(60,-25,-80);
+		glVertex3f(70,-30,-80);
+		glVertex3f(80,-35,-80);
+		glVertex3f(90,-35,-80);
+		glVertex3f(100,-35,-80);
+		glVertex3f(100,-100,-80);
 
-	}
-
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
-
-	if(flag==1){
-		switch(axis)
-		{
-			case 0: rotate[0]+=(speed*x);
-			        break;
-			case 1: rotate[1]+=(speed*y);
-			        break;
-			case 2: rotate[2]+=(speed*z);
-			        break;
-		 }
-	}
-
-
-	glRotatef( rotate[0], 1.0, 0.0, 0.0 );
- 	glRotatef( rotate[1], 0.0, 1.0, 0.0 );
- 	glRotatef( rotate[2], 0.0, 0.0, 1.0 );
-	if(size==1){
-		glPushMatrix();
-		glScalef(a,b,c);
-		drawHouse();
-		glPopMatrix();
-	}else{
-		drawHouse();
-	}
-
-	glFlush();
-	glutSwapBuffers();
-	glutPostRedisplay();
-
+    glEnd();
 }
 
+//method to handle the mouse clicks
 void mouse(int button,int state,int a,int b)
 {
 
@@ -391,7 +394,7 @@ void mouse(int button,int state,int a,int b)
 
 
 }
-
+//method to handel keyboard events
 void keyboard(unsigned char key, int x, int y)
 {
 	if(key=='s'){
@@ -416,6 +419,55 @@ void keyboard(unsigned char key, int x, int y)
 	}
 
 }
+
+void drawScene()
+{
+	glColor3f(1.0,1.0,0.6);
+	glBegin(GL_POLYGON);
+	glVertex3f(-200,-200,-200);
+	glVertex3f(200,-200,-200);
+	glVertex3f(-200,0,-200);
+	glVertex3f(200,0,-200);
+	glEnd();
+
+}
+
+//method to rotate house
+void rotateHouse(){
+		if(flag==1){
+			switch(axis)
+			{
+				case 0: rotate[0]+=(speed*x);
+				        break;
+				case 1: rotate[1]+=(speed*y);
+				        break;
+				case 2: rotate[2]+=(speed*z);
+				        break;
+			 }
+		}
+		glRotatef( rotate[0], 1.0, 0.0, 0.0 );
+	 	glRotatef( rotate[1], 0.0, 1.0, 0.0 );
+	 	glRotatef( rotate[2], 0.0, 0.0, 1.0 );
+		drawHouse();
+}
+
+//display method
+void display()
+{
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	background();
+	glPushMatrix();
+	glScalef(a,b,c);
+	rotateHouse();
+	glPopMatrix();
+	glFlush();
+	glutSwapBuffers();
+	glutPostRedisplay();
+
+}
+
+
 
 
 int main(int argc,char **argv)
