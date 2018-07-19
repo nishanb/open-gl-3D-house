@@ -7,7 +7,7 @@ int axis=-1;
 int flag=1;//rotation is disabled
 int size=0;
 float a=0.5,b=0.5,c=0.5;
-
+//i am ranjith issuing request
 //pattern data
 GLubyte roofPat[]={
 	0xff, 0x01, 0x00, 0x01,
